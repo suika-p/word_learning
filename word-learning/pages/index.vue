@@ -1,14 +1,17 @@
 <template>
   <main class="backcolor flex2">
     <div id="ch" class="item1 flex">
+      <!-- タイトル -->
       <div class="theme item1">
         <p>見習い魔女、</p>
         <p>初めてのおつかい編</p>
       </div>
+      <!-- メインキャラクター -->
       <div class="item2">
         <img src="~/assets/chara.png" alt="">
       </div>
     </div>
+    <!-- 難易度ごとのbattle画面に遷移する -->
     <div class="flex item2">
       <div class="center">
         <button class="button-img" v-on:click="$router.push('/battle')">初級</button>
@@ -43,6 +46,7 @@ export default {
 
   methods: {
     initialize: function () {
+      // 開始時タイトルとキャラを動かす
       anime.timeline()
           .add({
             targets: '#ch',

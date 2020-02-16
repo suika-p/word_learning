@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       en_word: [
-        "point out", "work out", "have something in mind", "as to", "so far", "to some/extent", 
+        "point out", "work out", "have something in mind", "as to", "so far", "a certain extent", 
         "look forward to", "follow up on", "in general", "make sence"
       ],
       ja_word: [

@@ -1,25 +1,31 @@
 <template>
   <main class="backcolor block">
     <div class="flexbox center paddingtop10">
+      <!-- 敵キャラを配置 -->
       <section class="flexitem">
         <img class="monster" v-bind:src="img_list[img_ind]" alt="">
       </section>
     </div>
+    <!-- 出題される日本語 -->
     <div class="mespad text-image">
       <img src="~/assets/mes.png" alt="">
       <p class="mesfont monster">{{ja_word[tmp_ind]}}</p>
     </div>
+    <!-- 文字入力欄 -->
     <div class="text-image">
       <img src="~/assets/mesinput.png" alt="">
       <input v-model="myText" v-on:keyup.enter="confirmWord" class="inputfont">
     </div>
+    <!-- 体力 -->
     <section class="flexbox2">
       <div class="paddingleft10">
         <img v-for="(_, key) in myPoint" :key="key" src="~/assets/heart.png">
       </div>
     </section>
+    <!-- ゲームオーバー画面 -->
     <p id="over" style="z-index:-1" v-on:click="$router.push('/')">{{gameover}}</p>
     <p id="over2" style="z-index:-1" v-on:click="$router.push('/')">クリックでタイトルへ戻る</p>
+    <!-- スコア表記 -->
     <p id="money">Score: {{moneyP}}G</p>
   </main>
   
@@ -44,7 +50,7 @@ export default {
         "go on", "come up", "go through", "with respect to"
       ],
       ja_word: [
-        "〜に対処する", "〜に対処する", "幾分か", "ある程度", "実際には", "必ず〜する、確かめる",
+        "〜の観点から", "〜に対処する", "幾分か", "ある程度", "実際には", "必ず〜する、確かめる",
          "起こる、続ける", "起こる、（問題が）発生する", "くまなく調べる、経験する",
         "〜に関して",
       ],
@@ -64,6 +70,7 @@ export default {
     chind: function (i) {
       this.tmp_ind = i;
     },
+    // 入力文字を判定する為に入力データを配列に整形する
     separate: function (str) {
       var s = "";
       var hako = [];
@@ -78,7 +85,9 @@ export default {
       if (s != "") hako.push(s);
       return hako;
     },
+    // 入力が正解時と不正解時の処理
     confirmWord: function () {
+      // ゲームオーバの時
       if (this.myPoint <= 0) {
         return;
       }
@@ -86,6 +95,7 @@ export default {
       var myText_list = this.separate(this.myText);
       var flag = true;
       for (var i = 0; i < enword_list.length; i++) {
+        // 入力のデータが正解と異なった時
         if (enword_list[i] != myText_list[i]) {
           var hint = "";
           for (var j = 0; j <= i; j++) {
@@ -94,6 +104,7 @@ export default {
           }
           this.myText = hint;
           flag = false;
+          // ゲームオーバー時、体力０の時
           if (this.myPoint <= 1) {
             this.myPoint--;
             anime.timeline()
@@ -109,6 +120,7 @@ export default {
           break;
         }
       }
+      // 正解時
       if (flag) {
         anime.timeline()
           .add({
@@ -123,12 +135,14 @@ export default {
           })  
         this.myText = "";
         this.search();
+        // ランダムに敵キャラクターの画像を出力
         var ind = Math.floor( Math.random() * this.img_list.length);
         this.img_ind = ind;
         this.moneyP += 50;
       }
       return 0;
     },
+    // ランダムに問題を出力
     search: function () {
       var ind = Math.floor( Math.random() * this.ja_word.length);
       this.chind(ind);
